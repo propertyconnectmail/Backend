@@ -1,0 +1,10 @@
+# Ignore node_modules folder
+node_modules/
+
+# Ignore environment and config files
+.env
+*.env.local
+
+# Ignore build folders
+dist/
+build/
