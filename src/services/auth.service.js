@@ -39,10 +39,6 @@ class LoginService {
                 return User
             }
 
-            // //User Authorization Token with Jwt Authentication
-            // let user = { _id: User._id, email: User.email, type: User.type };
-            // let token = auth.authenticateToken(user);
-            // return { Status: 200, Token: token.accessToken, Refresh: token.refreshToken, _id: User._id, email: User.email, type: User.type, grade: User.grade, dle_access: User.dle_access }
         }
         catch (err) {
             console.log(err)
@@ -74,11 +70,6 @@ class LoginService {
             if( validPassword === true ) {
                 return User
             }
-
-            // //User Authorization Token with Jwt Authentication
-            // let user = { _id: User._id, email: User.email, type: User.type };
-            // let token = auth.authenticateToken(user);
-            // return { Status: 200, Token: token.accessToken, Refresh: token.refreshToken, _id: User._id, email: User.email, type: User.type, grade: User.grade, dle_access: User.dle_access }
         }
         catch (err) {
             console.log(err)
@@ -110,10 +101,42 @@ class LoginService {
                 return User
             }
 
-            // //User Authorization Token with Jwt Authentication
-            // let user = { _id: User._id, email: User.email, type: User.type };
-            // let token = auth.authenticateToken(user);
-            // return { Status: 200, Token: token.accessToken, Refresh: token.refreshToken, _id: User._id, email: User.email, type: User.type, grade: User.grade, dle_access: User.dle_access }
+        }
+        catch (err) {
+            console.log(err)
+            return { Status: 500, Error: `${err.name} : ${err.message} `, Location: "./Src/Service/login.service.js - loginAndAuthenticate(body)" };
+        }
+    }
+
+
+
+    /**
+     * @description Attempt to login with the provided object
+     * @param body {object} Object containing 'email' and 'passwords' fields to
+     * get authenticated
+     * @returns {Object}
+     */
+     async forgotPassword(body) {
+        try {
+
+            //Check if email exists
+            let User 
+
+            if(body.type === 'client'){
+                User = await this.findEmailExistMobileClient(body);
+            }
+            if(body.type === 'professional'){
+                User = await this.findEmailExistMobileProfessional(body);
+            }
+
+            if (!User) {
+                return { Status: "400", message: "Email does not exist" };
+            }
+
+            if(User){
+                return User
+            }
+
         }
         catch (err) {
             console.log(err)
@@ -145,7 +168,7 @@ class LoginService {
 
         // Mail content
         let mailOptions = {
-            from: '"PropertyConnect" <adalanane1111@gmail.com>',
+            from: '"PropertyConnect" <propertyconnectmail@gmail.com>',
             to: body.email, // email passed in request body
             subject: "Your Verification Code",
             html: `
@@ -165,44 +188,7 @@ class LoginService {
 
         // Return code (you may also store it in DB or cache)
         return { Status: "200", Code: code , message : 'success'};
-        }
-
-
-    // /**
-    //  * @description Attempt to login with the provided object
-    //  * @param body {object} Object containing 'email' and 'passwords' fields to
-    //  * get authenticated
-    //  * @returns {Object}
-    //  */
-    // async forgotMobileUser(body) {
-    //     try {
-    //         //Check if email exists
-    //         let User = await this.findEmailExist(body);
-    //         if (!User) return { Status: "400", Error: "Email not Found" }
-
-    //         if (User.first_name != null && User.first_name != ""){
-    //             var chars = "0123456789abcdefghijklmnopqrstuvwxyz!@#$%^&*()ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    //             var passwordLength = 12;
-    //             var password = "";
-
-    //             for (var i = 0; i <= passwordLength; i++) {
-    //                 var randomNumber = Math.floor(Math.random() * chars.length);
-    //                 password += chars.substring(randomNumber, randomNumber +1);
-    //             }
-
-    //             // //Hashing the Password
-    //             // const salt = await bcrypt.genSalt(10);
-    //             // const hashedPassword = await bcrypt.hash(body.password, salt)
-    //             // body.password = hashedPassword;
-
-    //             return { message : "Password reset send Successfully"}
-    //         }
-    //     }
-    //     catch (err) {
-    //         console.log(err)
-    //         return { Status: 500, Error: `${err.name} : ${err.message} `, Location: "./Src/Service/login.service.js - loginAndAuthenticate(body)" };
-    //     }
-    // }
+    }
 
 
 

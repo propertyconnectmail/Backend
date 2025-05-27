@@ -6,7 +6,7 @@ router.post("/web", authRoutes.loginWebUser);
 router.post("/mobile/client", authRoutes.loginMobileClient);
 router.post("/mobile/professional", authRoutes.loginMobileProfessional);
 router.post("/mobile/verification", authRoutes.sendVerificationCode);
-// router.post("/forgot/web", login.forgotWebUser);
+router.post("/forgotpass", authRoutes.forgotPassword);
 // router.post("/forgot/mobile", login.forgotMobileUser);
 // router.get("/logout", login.logoutWebUser);
 

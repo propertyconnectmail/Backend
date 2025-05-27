@@ -298,6 +298,36 @@ class FileService {
     }
 
 
+     /**
+     * @description Attempt to update a post with the provided object
+     * @param body {object} Object containing 'email' field and the updated body
+     * to update specific post
+     * @returns {Object}
+     */
+      async updateForgotPassword( body ) {
+          try {
+  
+              let user = await this.MongooseServiceInstance.findOne({email : body.email})
+              if(!user){ return null }
+  
+              //Hashing the Password
+              const salt = await bcrypt.genSalt(10);
+              const hashedPassword = await bcrypt.hash(body.password, salt)
+  
+              //Updating document and returning result
+              let result = await this.MongooseServiceInstance.updateOne({email : body.email},{password : hashedPassword});
+              if(result.modifiedCount === 1){
+                return { message : "success" }
+              }
+              return result;
+          } 
+          catch ( err ) {
+              console.log( err)
+              return { Status: 500, Error : `${err.name} : ${err.message} `, Location: "./Src/Services/employee.service.js - updatePassword(body)" };
+          }
+      }
+
+
 
 
       /**

@@ -13,7 +13,7 @@ const ClientSchema = new mongoose.Schema(
     dob : String,
     url: String,
     status: String,
-    favorites: [{ type: mongoose.Schema.Types.ObjectId, ref: "Professional" }],
+    favorites: [],
     cards: [
       {
         cardNumber: String,

@@ -7,6 +7,7 @@ router.post("/get", client.findClient);
 router.get("/get/all", client.findAllClients);
 router.post("/update", client.updateClient);
 router.post("/update/pass", client.updatePassword);
+router.post("/update/forgot/pass", client.updateForgotPassword);
 router.post("/update/picture", client.updatePicture);
 router.post("/delete", client.deleteClient);
 

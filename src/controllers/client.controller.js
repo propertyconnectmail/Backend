@@ -1,7 +1,7 @@
 const file = require( "../services/client.service" );
 const FileService = new file();
 
-module.exports = { clientRegister , findClient , updateClient , deleteClient, findAllClients, updatePicture, updatePassword, addCard, updateCard, getCards, getCard, deleteCard};
+module.exports = { clientRegister , findClient , updateClient , deleteClient, findAllClients, updatePicture, updatePassword, updateForgotPassword, addCard, updateCard, getCards, getCard, deleteCard};
 
 /**
  * @description Create a record with the provided body
@@ -80,6 +80,20 @@ async function updatePicture ( req, res ) {
     async function updatePassword ( req, res ) {
       try {
         const result = await FileService.updatePassword( req.body);
+        return res.send( result );
+      } catch ( err ) {
+        console.log( err ); 
+        res.status( 500 ).send( { Status: 500 , Success: false, Error : `${err.name} : ${err.message}`  } );
+      }
+    }
+
+
+        /**
+ * @description Update specific Professional with the email provided by body
+ */
+    async function updateForgotPassword ( req, res ) {
+      try {
+        const result = await FileService.updateForgotPassword( req.body);
         return res.send( result );
       } catch ( err ) {
         console.log( err ); 

@@ -1,7 +1,7 @@
 const file = require("../services/auth.service");
 const FileService = new file();
 
-module.exports = { loginWebUser, loginMobileClient, loginMobileProfessional, sendVerificationCode };
+module.exports = { loginWebUser, loginMobileClient, loginMobileProfessional, sendVerificationCode, forgotPassword };
 
 /**
  * @description Find email and authenticate with the provided body
@@ -59,21 +59,21 @@ async function sendVerificationCode(req, res) {
 }
 
 
-// /**
-//  * @description Find email and authenticate with the provided body
-//  * @param req {object} Express req object 
-//  * @param res {object} Express res object
-//  * @returns {object} success or failure object
-//  */
-// async function forgotWebUser(req, res) {
-//   try {
-//     const result = await FileService.forgotWebUser(req.body);
-//     return res.send(result);
-//   } catch (err) {
-//     console.log(err);
-//     res.status(500).send({ Status: 500, Success: false, Error: `${err.name} : ${err.message}` });
-//   }
-// }
+/**
+ * @description Find email and authenticate with the provided body
+ * @param req {object} Express req object 
+ * @param res {object} Express res object
+ * @returns {object} success or failure object
+ */
+async function forgotPassword(req, res) {
+  try {
+    const result = await FileService.forgotPassword(req.body);
+    return res.send(result);
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({ Status: 500, Success: false, Error: `${err.name} : ${err.message}` });
+  }
+}
 
 
 // /**

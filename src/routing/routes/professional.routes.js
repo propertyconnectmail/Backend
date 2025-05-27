@@ -8,6 +8,7 @@ router.get("/get/all", professional.findAllProfessional);
 router.get("/get/all/verified", professional.findAllVerifiedProfessional);
 router.post("/update", professional.updateProfessional);
 router.post("/update/pass", professional.updatePassword);
+router.post("/update/forgot/pass", professional.updateForgotPassword);
 router.post("/update/picture", professional.updatePicture);
 router.post("/delete", professional.deleteProfessional);
 
