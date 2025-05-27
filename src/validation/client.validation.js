@@ -44,7 +44,8 @@ const registerClientValidation = data => {
             .valid('active', 'blocked'),
         favorites: Joi.array()
             .optional(),
-        cards: Joi.array().items(cardSchema).optional()
+        cards: Joi.array()
+            .optional()
     });
 
     return schema.validate(data);
