@@ -73,14 +73,14 @@ const documentAndImageFileFilter = (req, file, cb) => {
 const uploadSingleImage = multer({
   storage,
   fileFilter: imageFileFilter,
-  limits: { fileSize: 10 * 1024 * 1024 } // 10MB
+  limits: { fileSize: 50 * 1024 * 1024 } // 10MB
 }).single('image');
 
 // 2. Multiple certification documents
 const uploadCertifications = multer({
   storage,
   fileFilter: certificationFileFilter,
-  limits: { fileSize: 20 * 1024 * 1024 } // 20MB per file
+  limits: { fileSize: 50 * 1024 * 1024 } // 20MB per file
 }).array('certifications', 10);
 
 // 3. Multiple documents + images

@@ -29,7 +29,7 @@ const registerEmployeeValidation = data => {
             .pattern(/^\d+$/)
             .required(),
         type: Joi.string()
-            .valid('admin', 'employee'),
+            .valid('system admin', 'business admin', 'operations officer'),
         address: Joi.string()
             .min(8)
             .max(255)

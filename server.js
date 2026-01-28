@@ -69,6 +69,27 @@ app.get('/api/certifications/download-zip', async (req, res) => {
   await archive.finalize();
 });
 
+app.get('/api/download-file', async (req, res) => {
+  const fileUrl = req.query.url;
+
+  if (!fileUrl) {
+    return res.status(400).json({ message: 'Missing url parameter' });
+  }
+
+  const axios = require('axios');
+
+  try {
+    const response = await axios.get(fileUrl, { responseType: 'stream' });
+    const filename = decodeURIComponent(fileUrl.split('/').pop());
+    
+    res.attachment(filename);
+    response.data.pipe(res);
+  } catch (err) {
+    console.error(`Failed to download: ${fileUrl}`, err.message);
+    res.status(500).json({ message: 'Download failed' });
+  }
+});
+
 
 // Simple test route
 app.get('/', (req, res) => {

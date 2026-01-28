@@ -60,6 +60,24 @@ class FileService {
             }
         }
 
+        // Identity image upload
+        if (body.identityImage) {
+            const fileName = body.identityImage.split('/static/Temp/')[1];
+            const localFilePath = path.resolve(__dirname, '../../Public/Temp', fileName);
+            
+            try {
+                const aws_url = await aws.uploadfile(localFilePath);
+                body.identityImage = aws_url.Location;
+                
+                fs.unlink(localFilePath, (err) => {
+                    if (err) console.error(`Failed to delete ${fileName}:`, err);
+                    else console.log(`Deleted temp file: ${fileName}`);
+                });
+            } catch (err) {
+                console.error(`Upload failed for identity image:`, err);
+            }
+        }
+
         // Replace the original array with uploaded URLs
         body.certifications = uploadedUrls;
         

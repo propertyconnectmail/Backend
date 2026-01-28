@@ -55,6 +55,10 @@ const registerProfessionalValidation = data => {
             .items(Joi.string()
                 .min(10)
                 .max(1024)),
+        identityImage: Joi.string()
+            .min(10)
+            .max(1024)
+            .required(),
         rating: Joi.array()
     });
 

@@ -14,6 +14,7 @@ const ProfessionalSchema = new mongoose.Schema({
     url: String,
     status: String,
     consultationFee: String,
+    identityImage: String,
     totalRating: String,
     totalCount: String,
     averageRating: String,
