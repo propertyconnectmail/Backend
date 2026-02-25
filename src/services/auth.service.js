@@ -144,32 +144,26 @@ class LoginService {
         }
     }
 
-
-
-    
     async sendVerificationCode(body) {
 
         // Generate 6-digit numeric code
-        const code = Math.floor(100000 + Math.random() * 900000); // e.g., 682391
+        const code = Math.floor(100000 + Math.random() * 900000);
 
-        const accountPassword = process.env.GMAIL_PASSWORD;
-        const accountEmail = process.env.GMAIL_MAIL;
-
-        // Create transport
+        // ============ CHANGED SECTION START ============
+        // Using Brevo SMTP with nodemailer
         let transporter = nodemailer.createTransport({
-            host: "smtp.gmail.com",
+            host: 'smtp-relay.brevo.com',
             port: 587,
             secure: false,
             auth: {
-            user: accountEmail, // your Gmail
-            pass: accountPassword // your Gmail app password (should use env variable in prod)
+                user: process.env.BREVO_EMAIL,      // Your Brevo login email
+                pass: process.env.BREVO_SMTP_KEY    // Your Brevo SMTP key
             }
         });
 
-        // Mail content
         let mailOptions = {
             from: '"PropertyConnect" <propertyconnectmail@gmail.com>',
-            to: body.email, // email passed in request body
+            to: body.email,
             subject: "Your Verification Code",
             html: `
             <div style="font-family: Arial, sans-serif; padding: 20px;">
@@ -183,12 +177,59 @@ class LoginService {
             `
         };
 
-        // Send mail
-        await transporter.sendMail(mailOptions);
-
-        // Return code (you may also store it in DB or cache)
-        return { Status: "200", Code: code , message : 'success'};
+        try {
+            await transporter.sendMail(mailOptions);
+            return { Status: "200", Code: code, message: 'success' };
+        } catch (error) {
+            console.error('Brevo email error:', error);
+            return { Status: "500", Error: error.message, message: 'failed' };
+        }
+        // ============ CHANGED SECTION END ============
     }
+
+    
+    // async sendVerificationCode(body) {
+
+    //     // Generate 6-digit numeric code
+    //     const code = Math.floor(100000 + Math.random() * 900000); // e.g., 682391
+
+    //     const accountPassword = process.env.GMAIL_PASSWORD;
+    //     const accountEmail = process.env.GMAIL_MAIL;
+
+    //     // Create transport
+    //     let transporter = nodemailer.createTransport({
+    //         host: "smtp.gmail.com",
+    //         port: 587,
+    //         secure: false,
+    //         auth: {
+    //         user: accountEmail, // your Gmail
+    //         pass: accountPassword // your Gmail app password (should use env variable in prod)
+    //         }
+    //     });
+
+    //     // Mail content
+    //     let mailOptions = {
+    //         from: '"PropertyConnect" <propertyconnectmail@gmail.com>',
+    //         to: body.email, // email passed in request body
+    //         subject: "Your Verification Code",
+    //         html: `
+    //         <div style="font-family: Arial, sans-serif; padding: 20px;">
+    //             <h2>Hi ${body.firstName || ''},</h2>
+    //             <p>Here is your 6-digit verification code:</p>
+    //             <h1 style="letter-spacing: 2px;">${code}</h1>
+    //             <p>This code will expire in 10 minutes.</p>
+    //             <br />
+    //             <p>— PropertyConnect Team</p>
+    //         </div>
+    //         `
+    //     };
+
+    //     // Send mail
+    //     await transporter.sendMail(mailOptions);
+
+    //     // Return code (you may also store it in DB or cache)
+    //     return { Status: "200", Code: code , message : 'success'};
+    // }
 
 
 
