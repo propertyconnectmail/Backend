@@ -150,22 +150,20 @@ class LoginService {
         const code = Math.floor(100000 + Math.random() * 900000);
 
         // ============ CHANGED SECTION START ============
-        // Using Brevo SMTP with nodemailer
-        let transporter = nodemailer.createTransport({
-            host: 'smtp-relay.brevo.com',
-            port: 587,
-            secure: false,
-            auth: {
-                user: process.env.BREVO_EMAIL,      // Your Brevo login email
-                pass: process.env.BREVO_SMTP_KEY    // Your Brevo SMTP key
-            }
-        });
+        // Using Brevo HTTP API (not SMTP) - works on Render free tier
+        const SibApiV3Sdk = require('sib-api-v3-sdk');
+        
+        const defaultClient = SibApiV3Sdk.ApiClient.instance;
+        const apiKey = defaultClient.authentications['api-key'];
+        apiKey.apiKey = process.env.BREVO_API_KEY;
 
-        let mailOptions = {
-            from: '"PropertyConnect" <propertyconnectmail@gmail.com>',
-            to: body.email,
-            subject: "Your Verification Code",
-            html: `
+        const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
+
+        const sendSmtpEmail = {
+            to: [{ email: body.email, name: body.firstName || '' }],
+            sender: { name: 'PropertyConnect', email: 'propertyconnectmail@gmail.com' },
+            subject: 'Your Verification Code',
+            htmlContent: `
             <div style="font-family: Arial, sans-serif; padding: 20px;">
                 <h2>Hi ${body.firstName || ''},</h2>
                 <p>Here is your 6-digit verification code:</p>
@@ -178,7 +176,7 @@ class LoginService {
         };
 
         try {
-            await transporter.sendMail(mailOptions);
+            await apiInstance.sendTransacEmail(sendSmtpEmail);
             return { Status: "200", Code: code, message: 'success' };
         } catch (error) {
             console.error('Brevo email error:', error);
@@ -186,6 +184,7 @@ class LoginService {
         }
         // ============ CHANGED SECTION END ============
     }
+
 
     
     // async sendVerificationCode(body) {
