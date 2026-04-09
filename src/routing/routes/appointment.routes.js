@@ -11,11 +11,14 @@ router.post("/update", appointment.updateAppointment);
 router.post("/update/client/files", appointment.updateClientFiles);
 router.post("/update/professional/files", appointment.updateProfessionalFiles);
 
+// ============ ADDED FOR FEEDBACK/COMPLAINT SYSTEM ============
+router.post("/feedback/client", appointment.submitClientFeedback);
+router.post("/feedback/professional", appointment.submitProfessionalFeedback);
+router.get("/complaints", appointment.getComplaintAppointments);
+router.post("/complaint/update-status", appointment.updateComplaintStatus);
+router.get("/all", appointment.getAllAppointments);
+// Get single appointment by ID (for admin)
+router.get("/get/:appointmentId", appointment.getAppointmentById);
+// ============ END ============
+
 module.exports = router;
-
-
- 
-
-
-
-

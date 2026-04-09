@@ -10,6 +10,8 @@ const ProfessionalSchema = new mongoose.Schema({
     phone: String,
     type: String,
     address: String,
+    province: String,
+    district: String,
     dob : String,
     url: String,
     status: String,
@@ -21,6 +23,8 @@ const ProfessionalSchema = new mongoose.Schema({
     about: String,
     consults: String,
     experience: String,
+    rejectionReason: String,  // NEW FIELD
+    rejectedAt: Date,         // NEW FIELD
     bankAccountDetails: {
         accountHolderName: { type: String },
         accountNumber: { type: String },

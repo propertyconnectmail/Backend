@@ -30,7 +30,30 @@ const AppointmentSchema = new mongoose.Schema({
   commission: String,
   transactionFee: String,
 
-  chatId: String
+  chatId: String,
+
+  // ============ FEEDBACK/COMPLAINT SYSTEM ============
+  clientFeedback: {
+    satisfied: { type: Boolean, default: null },
+    complaintType: { type: String, default: '' },
+    complaintMessage: { type: String, default: '' },
+    submittedAt: { type: Date, default: null }
+  },
+  professionalFeedback: {
+    satisfied: { type: Boolean, default: null },
+    complaintType: { type: String, default: '' },
+    complaintMessage: { type: String, default: '' },
+    submittedAt: { type: Date, default: null }
+  },
+  hasComplaint: { type: Boolean, default: false },
+  complaintStatus: { type: String, default: '' }, // 'pending', 'reviewing', 'resolved'
+  
+  // ============ NEW: Completion tracking for both parties ============
+  appointmentCompletedByClient: { type: Boolean, default: false },
+  appointmentCompletedByProfessional: { type: Boolean, default: false },
+  // Add to your Appointment.js model schema
+  complaintResolvedAt: { type: Date, default: null }
+  // ============ END ============
 }, {
   timestamps: true
 });

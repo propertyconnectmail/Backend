@@ -37,6 +37,13 @@ const registerProfessionalValidation = data => {
             .min(8)
             .max(255)
             .required(),
+        province: Joi.string()
+            .valid('Western', 'Central', 'Southern', 'Northern', 'Eastern', 'North Western', 'North Central', 'Uva', 'Sabaragamuwa')
+            .required(),
+        district: Joi.string()
+            .max(100)
+            .optional()
+            .allow(''),
         dob: Joi.string()
             .required(),
         url: Joi.string()
@@ -51,6 +58,13 @@ const registerProfessionalValidation = data => {
         about: Joi.string(),
         consults: Joi.string().allow(''),
         experience: Joi.string(),
+        rejectionReason: Joi.string()    // NEW FIELD
+            .max(1000)
+            .optional()
+            .allow(''),
+        rejectedAt: Joi.date()           // NEW FIELD
+            .optional()
+            .allow(null),
         certifications: Joi.array()
             .items(Joi.string()
                 .min(10)
